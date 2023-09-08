@@ -51,6 +51,7 @@ const App = () => {
     );
   };
 
+  console.log('render App');
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#f4f4f4'}}>
       <View>

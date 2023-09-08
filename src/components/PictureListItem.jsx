@@ -4,6 +4,7 @@ import ActionButton from "./ActionButton";
 
 const PictureListItem = ({picture, onItemLiked, onItemDisliked}) => {
 
+    console.log('render picture ' + picture.id);
     return (
         <View style={styles.card}>
             <Image 
