@@ -87,11 +87,9 @@ const App = () => {
         <PictureList
           pictures={pictures}
           onItemLiked={id => {
-            console.log('liked picture id: ' + id);
             updatePictureLikesById(id, 1);
           }}
           onItemDisliked={id => {
-            console.log('disliked picture id: ' + id);
             updatePictureLikesById(id, -1);
           }}
         />
