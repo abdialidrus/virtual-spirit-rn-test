@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
-import PictureList from './src/components/PictureList';
+import {View, FlatList, StyleSheet, SafeAreaView} from 'react-native';
+import PictureListItem from './src/components/PictureListItem';
 import ActionButton from './src/components/ActionButton';
 
 const App = () => {
@@ -84,14 +84,17 @@ const App = () => {
             }}
           />
         </View>
-        <PictureList
-          pictures={pictures}
-          onItemLiked={id => {
-            updatePictureLikesById(id, 1);
-          }}
-          onItemDisliked={id => {
-            updatePictureLikesById(id, -1);
-          }}
+        <FlatList
+          data={pictures}
+          renderItem={({item}) => (
+            <PictureListItem
+              picture={item}
+              onItemLiked={id => updatePictureLikesById(id, 1)}
+              onItemDisliked={id => updatePictureLikesById(id, -1)}
+            />
+          )}
+          keyExtractor={picture => picture.id}
+          contentContainerStyle={{paddingBottom: 110}}
         />
       </View>
     </SafeAreaView>
