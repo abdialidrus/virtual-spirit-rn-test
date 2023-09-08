@@ -51,6 +51,17 @@ const App = () => {
     );
   };
 
+  const renderItem = ({item}) => {
+    return (
+      <PictureListItem
+        picture={item}
+        onItemLiked={id => updatePictureLikesById(id, 1)}
+        onItemDisliked={id => updatePictureLikesById(id, -1)}
+      />
+    );
+  };
+  const keyExtractor = item => item.id;
+
   console.log('render App');
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#f4f4f4'}}>
@@ -87,14 +98,8 @@ const App = () => {
         </View>
         <FlatList
           data={pictures}
-          renderItem={({item}) => (
-            <PictureListItem
-              picture={item}
-              onItemLiked={id => updatePictureLikesById(id, 1)}
-              onItemDisliked={id => updatePictureLikesById(id, -1)}
-            />
-          )}
-          keyExtractor={picture => picture.id}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
           contentContainerStyle={{paddingBottom: 110}}
         />
       </View>
