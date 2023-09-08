@@ -1,54 +1,31 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, FlatList, StyleSheet, SafeAreaView} from 'react-native';
 import PictureListItem from './src/components/PictureListItem';
 import ActionButton from './src/components/ActionButton';
+import picturesData from './assets/data/pictures.json';
 
 const App = () => {
-  const picturesInitialState = [
-    {
-      id: 1,
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Altja_j%C3%B5gi_Lahemaal.jpg/800px-Altja_j%C3%B5gi_Lahemaal.jpg',
-      likes: 0,
-    },
-    {
-      id: 2,
-      imageUrl:
-        'https://cdn.pixabay.com/photo/2018/02/02/17/29/nature-3125912_1280.jpg',
-      likes: 0,
-    },
-    {
-      id: 3,
-      imageUrl:
-        'https://wallpapers.com/images/featured/nature-2ygv7ssy2k0lxlzu.jpg',
-      likes: 0,
-    },
-  ];
-
-  const [pictures, setPictures] = useState(picturesInitialState);
+  const [pictures, setPictures] = useState(picturesData);
+  const picturesRef = useRef(picturesData);
 
   const updatePictureLikesById = (id, total) => {
-    setPictures(current =>
-      current.map(picture => {
-        if (picture.id == id) {
-          return {...picture, likes: picture.likes + total};
-        }
-
-        return picture;
-      }),
-    );
+    for (let i = 0; i < picturesRef.current.length; i++) {
+      if (picturesRef.current[i].id === id) {
+        picturesRef.current[i].likes = picturesRef.current[i].likes + total;
+      }
+    }
   };
 
   const updateAllPicturesLikes = total => {
-    setPictures(current =>
-      current.map(picture => {
-        if (total == 0) {
-          return {...picture, likes: total};
-        }
+    for (let i = 0; i < picturesRef.current.length; i++) {
+      if (total == 0) {
+        picturesRef.current[i].likes = total;
+      } else {
+        picturesRef.current[i].likes = picturesRef.current[i].likes + total;
+      }
+    }
 
-        return {...picture, likes: picture.likes + total};
-      }),
-    );
+    setPictures([...picturesRef.current]);
   };
 
   const renderItem = ({item}) => {
@@ -66,14 +43,7 @@ const App = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#f4f4f4'}}>
       <View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignContent: 'space-between',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: 10,
-          }}>
+        <View style={styles.topContainer}>
           <ActionButton
             title={'Like All'}
             type="like"
@@ -108,8 +78,12 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 30,
+  topContainer: {
+    flexDirection: 'row',
+    alignContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
   },
 });
 

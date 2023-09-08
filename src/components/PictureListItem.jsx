@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 import ActionButton from "./ActionButton";
 
-const PictureListItem = ({picture, onItemLiked, onItemDisliked}) => {
-
-    console.log('render picture ' + picture.id);
+const PictureListItem = (({picture, onItemLiked, onItemDisliked}) => {
+    console.log('picture ' + picture.id + ' render');
+    const [likes, setLikes] = useState(picture.likes)
+    
     return (
         <View style={styles.card}>
             <Image 
@@ -12,10 +13,7 @@ const PictureListItem = ({picture, onItemLiked, onItemDisliked}) => {
                     uri: picture.imageUrl
                 }}
                 resizeMode="cover"
-                style={{
-                    width: "100%",
-                    height: 200
-                }}
+                style={styles.img}
             />
             <View style={styles.cardContentBottom}>
                 <View style={styles.likeCounter}>
@@ -26,6 +24,7 @@ const PictureListItem = ({picture, onItemLiked, onItemDisliked}) => {
                         title='Like' 
                         type='like'
                         onPress={() => {
+                            setLikes(likes + 1)
                             onItemLiked(picture.id)
                         }} 
                     />
@@ -34,6 +33,7 @@ const PictureListItem = ({picture, onItemLiked, onItemDisliked}) => {
                         title='Dislike' 
                         type='dislike'
                         onPress={() => {
+                            setLikes(likes - 1)
                             onItemDisliked(picture.id)
                         }} 
                     />
@@ -41,9 +41,13 @@ const PictureListItem = ({picture, onItemLiked, onItemDisliked}) => {
             </View>
         </View>
     )
-}
+})
 
 const styles = StyleSheet.create({
+    img:{
+        width: "100%",
+        height: 200
+    },
     card: {
         borderRadius: 8,
         elevation: 3,
